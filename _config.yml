@@ -13,7 +13,7 @@ timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://localhost:4000
+url: https://suochina.github.io
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -98,6 +98,11 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: butterfly
 
+# Deployment
+## Docs: https://hexo.io/docs/one-command-deployment
+deploy:
+  type: ''
+
 # 搜索插件配置
 search:
   path: search.xml
@@ -121,9 +126,3 @@ feed:
 
 # 代码压缩配置
 all_minifier: true
-
-# Deployment
-deploy:
-  type: git
-  repo: https://github.com/suoChina/suoChina.github.io.git
-  branch: main
