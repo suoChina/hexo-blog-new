@@ -72,15 +72,54 @@ git clone git@github-other:其他用户名/其他仓库.git
 
 ## 🔧 方案二：Personal Access Token 配置
 
-### 步骤 1: 生成 Token
+### 步骤 1: 生成 Personal Access Token
 
-为每个账号生成 Personal Access Token：
-- suoChina 账号：https://github.com/settings/tokens
-- 其他账号：https://github.com/settings/tokens
+#### **在 GitHub 上生成 Token**
 
-选择权限：`repo`, `workflow`
+1. **访问 Token 设置页面**
+   - suoChina 账号：https://github.com/settings/tokens
+   - 其他账号：https://github.com/settings/tokens
 
-### 步骤 2: 配置全局 Git 用户信息
+2. **创建新 Token**
+   - 点击 "Generate new token" → "Generate new token (classic)"
+   - 填写信息：
+     - **Note**: 给 Token 起个名字，如 "我的电脑-开发用"
+     - **Expiration**: 选择过期时间（建议选择较长时间）
+
+3. **选择权限**
+   - ✅ `repo` (完整仓库访问权限)
+   - ✅ `workflow` (更新 GitHub Action 工作流)
+   - ✅ `write:packages` (如果需要发布包)
+
+4. **生成并复制 Token**
+   - 点击 "Generate token"
+   - **重要**：复制生成的 Token（只显示一次！）
+   - 保存到安全的地方
+
+### 步骤 2: 配置 Git 使用 Token
+
+#### **方法 A: 使用 Git 凭据管理器（推荐）**
+
+```bash
+# 配置 Git 使用凭据管理器
+git config --global credential.helper manager-core
+
+# 或者使用 Windows 凭据管理器
+git config --global credential.helper wincred
+```
+
+#### **方法 B: 直接在 URL 中使用 Token**
+
+```bash
+# 克隆时直接使用 Token
+git clone https://你的用户名:你的Token@github.com/suoChina/hexo-blog-new.git
+
+# 或者只输入用户名，密码时输入 Token
+git clone https://github.com/suoChina/hexo-blog-new.git
+# 当提示输入密码时，粘贴 Token
+```
+
+### 步骤 3: 配置全局 Git 用户信息
 
 ```bash
 # 设置全局用户信息（用于默认账号）
@@ -88,7 +127,7 @@ git config --global user.name "suoChina"
 git config --global user.email "suoChina@example.com"
 ```
 
-### 步骤 3: 为特定仓库配置用户信息
+### 步骤 4: 为特定仓库配置用户信息
 
 ```bash
 # 进入其他账号的仓库
@@ -99,7 +138,7 @@ git config user.name "其他用户名"
 git config user.email "其他邮箱@example.com"
 ```
 
-### 步骤 4: 使用 HTTPS 克隆
+### 步骤 5: 使用 HTTPS 克隆
 
 ```bash
 # 克隆 suoChina 的仓库
@@ -107,16 +146,6 @@ git clone https://github.com/suoChina/hexo-blog-new.git
 
 # 克隆其他账号的仓库
 git clone https://github.com/其他用户名/其他仓库.git
-```
-
-### 步骤 5: 配置凭据存储
-
-```bash
-# Windows 系统
-git config --global credential.helper manager-core
-
-# 或者使用 Windows 凭据管理器
-git config --global credential.helper wincred
 ```
 
 ## 🎯 实际使用示例
@@ -146,29 +175,76 @@ git push origin main
 
 ### 场景 2: 使用 Personal Access Token
 
+#### **方法 A: 使用凭据管理器**
+
 ```bash
-# 工作流程
-# 1. 克隆 suoChina 的仓库
+# 1. 配置凭据管理器
+git config --global credential.helper manager-core
+
+# 2. 克隆 suoChina 的仓库
 git clone https://github.com/suoChina/hexo-blog-new.git
 cd hexo-blog-new
 
-# 2. 正常操作（使用 suoChina 的凭据）
+# 3. 第一次推送时会提示输入凭据
+git push origin main
+# 输入：
+# Username: suoChina
+# Password: 你的Personal Access Token
+# Windows 会记住这些凭据
+
+# 4. 克隆其他账号的仓库
+git clone https://github.com/其他用户名/其他仓库.git
+cd 其他仓库
+
+# 5. 设置该仓库的用户信息
+git config user.name "其他用户名"
+git config user.email "其他邮箱@example.com"
+
+# 6. 推送时会提示输入其他账号的凭据
+git push origin main
+# 输入：
+# Username: 其他用户名
+# Password: 其他账号的Personal Access Token
+```
+
+#### **方法 B: 直接在 URL 中使用 Token**
+
+```bash
+# 1. 克隆 suoChina 的仓库（使用 Token）
+git clone https://suoChina:你的Token@github.com/suoChina/hexo-blog-new.git
+cd hexo-blog-new
+
+# 2. 正常操作
 git add .
 git commit -m "suoChina 的更新"
 git push origin main
 
-# 3. 克隆其他账号的仓库
-git clone https://github.com/其他用户名/其他仓库.git
+# 3. 克隆其他账号的仓库（使用不同的 Token）
+git clone https://其他用户名:其他Token@github.com/其他用户名/其他仓库.git
 cd 其他仓库
 
 # 4. 设置该仓库的用户信息
 git config user.name "其他用户名"
 git config user.email "其他邮箱@example.com"
 
-# 5. 正常操作（使用其他账号的凭据）
+# 5. 正常操作
 git add .
 git commit -m "其他账号的更新"
 git push origin main
+```
+
+#### **方法 C: 使用环境变量（高级）**
+
+```bash
+# 1. 设置环境变量（Windows PowerShell）
+$env:GITHUB_TOKEN_SUOCHINA = "你的suoChina Token"
+$env:GITHUB_TOKEN_OTHER = "你的其他账号Token"
+
+# 2. 克隆时使用环境变量
+git clone https://suoChina:$env:GITHUB_TOKEN_SUOCHINA@github.com/suoChina/hexo-blog-new.git
+
+# 3. 克隆其他账号的仓库
+git clone https://其他用户名:$env:GITHUB_TOKEN_OTHER@github.com/其他用户名/其他仓库.git
 ```
 
 ## ⚠️ 注意事项
