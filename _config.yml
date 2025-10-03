@@ -4,9 +4,9 @@
 
 # Site
 title: 我的新博客
-subtitle: '分享技术与生活'
+subtitle: '厚积薄发'
 description: '一个全新的技术博客，记录学习与成长'
-keywords: '博客,技术,学习,Hexo'
+keywords: '博客,技术,学习'
 author: SuoL
 language: zh-CN
 timezone: 'Asia/Shanghai'
@@ -101,7 +101,9 @@ theme: butterfly
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git
+  repo: https://github.com/suoChina/suoChina.github.io.git
+  branch: main
 
 # 搜索插件配置
 search:
