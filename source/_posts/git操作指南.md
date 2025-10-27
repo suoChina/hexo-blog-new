@@ -1115,6 +1115,481 @@ git config --global --unset http.proxy
 git config --global --unset https.proxy
 ```
 
+### 13.10 查看Git远程仓库信息完整指南 🔍
+
+#### 13.10.1 基本查看命令 📋
+
+```bash
+# 查看所有远程仓库（简洁版）
+git remote
+
+# 查看所有远程仓库（详细版）
+git remote -v
+
+# 查看特定远程仓库的详细信息
+git remote show origin
+```
+
+#### 13.10.2 git remote 命令详解 🔍
+
+##### **git remote（简洁版）**
+```bash
+git remote
+# 输出：
+# origin
+# upstream
+```
+
+##### **git remote -v（详细版）**
+```bash
+git remote -v
+# 输出：
+# origin    https://github.com/用户名/仓库名.git (fetch)
+# origin    https://github.com/用户名/仓库名.git (push)
+# upstream  https://github.com/原作者/仓库名.git (fetch)
+# upstream  https://github.com/原作者/仓库名.git (push)
+```
+
+##### **git remote show（详细信息）**
+```bash
+git remote show origin
+# 输出：
+# * remote origin
+#   Fetch URL: https://github.com/用户名/仓库名.git
+#   Push  URL: https://github.com/用户名/仓库名.git
+#   HEAD branch: main
+#   Remote branches:
+#     main tracked
+#     dev  tracked
+#   Local branch configured for 'git pull':
+#     main merges with remote main
+#   Local ref configured for 'git push':
+#     main pushes to main (up to date)
+```
+
+#### 13.10.3 远程仓库信息解读 📖
+
+##### **远程仓库名称**
+- **origin**：默认的远程仓库名称
+- **upstream**：上游仓库（通常用于Fork项目）
+- **其他名称**：自定义的远程仓库名称
+
+##### **URL类型**
+- **HTTPS**：`https://github.com/用户名/仓库名.git`
+- **SSH**：`git@github.com:用户名/仓库名.git`
+
+##### **操作类型**
+- **fetch**：拉取操作对应的URL
+- **push**：推送操作对应的URL
+
+#### 13.10.4 查看分支跟踪关系 🌿
+
+```bash
+# 查看本地分支与远程分支的跟踪关系
+git branch -vv
+
+# 输出示例：
+# * main    a1b2c3d [origin/main] 最新提交信息
+#   dev     e4f5g6h [origin/dev] 开发分支
+#   feature f7g8h9i 功能分支（无跟踪关系）
+```
+
+#### 13.10.5 查看远程分支信息 📡
+
+```bash
+# 查看所有远程分支
+git branch -r
+
+# 输出：
+# origin/main
+# origin/dev
+# origin/feature
+
+# 查看所有分支（本地+远程）
+git branch -a
+
+# 输出：
+# * main
+#   dev
+#   feature
+#   remotes/origin/main
+#   remotes/origin/dev
+#   remotes/origin/feature
+```
+
+#### 13.10.6 查看远程仓库状态 📊
+
+```bash
+# 查看远程仓库的详细信息
+git remote show origin
+
+# 输出包含：
+# - 远程仓库URL
+# - HEAD分支
+# - 远程分支列表
+# - 本地分支配置
+# - 推送/拉取配置
+```
+
+#### 13.10.7 实际使用场景 🎯
+
+##### **场景1：检查仓库配置**
+```bash
+# 进入项目目录
+cd 你的项目
+
+# 查看远程仓库
+git remote -v
+
+# 检查分支跟踪关系
+git branch -vv
+```
+
+##### **场景2：Fork项目协作**
+```bash
+# 查看Fork项目的远程配置
+git remote -v
+# 输出：
+# origin    https://github.com/你的用户名/仓库名.git (fetch)
+# origin    https://github.com/你的用户名/仓库名.git (push)
+# upstream  https://github.com/原作者/仓库名.git (fetch)
+# upstream  https://github.com/原作者/仓库名.git (push)
+```
+
+##### **场景3：多远程仓库管理**
+```bash
+# 查看所有远程仓库
+git remote
+
+# 查看特定远程仓库详情
+git remote show upstream
+
+# 查看分支跟踪关系
+git branch -vv
+```
+
+#### 13.10.8 常见问题解决 🔧
+
+##### **问题1：没有远程仓库**
+```bash
+# 如果显示没有远程仓库
+git remote -v
+# 输出：空（没有远程仓库）
+
+# 添加远程仓库
+git remote add origin https://github.com/用户名/仓库名.git
+```
+
+##### **问题2：远程仓库地址错误**
+```bash
+# 查看当前地址
+git remote -v
+
+# 修改远程仓库地址
+git remote set-url origin 新的仓库地址
+
+# 验证修改
+git remote -v
+```
+
+##### **问题3：分支跟踪关系丢失**
+```bash
+# 查看分支状态
+git branch -vv
+
+# 重新设置跟踪关系
+git branch --set-upstream-to=origin/main main
+```
+
+#### 13.10.9 高级用法 🚀
+
+##### **查看远程仓库的完整信息**
+```bash
+# 获取远程仓库的详细信息
+git remote show origin
+
+# 包含内容：
+# - 远程仓库URL
+# - HEAD分支
+# - 远程分支列表
+# - 本地分支配置
+# - 推送/拉取配置
+# - 过时的分支信息
+```
+
+##### **检查远程仓库连接**
+```bash
+# 测试远程仓库连接
+git ls-remote origin
+
+# 输出：
+# a1b2c3d4e5f6... refs/heads/main
+# e7f8g9h0i1j2... refs/heads/dev
+# k3l4m5n6o7p8... refs/tags/v1.0.0
+```
+
+##### **查看远程仓库的标签**
+```bash
+# 查看远程标签
+git ls-remote --tags origin
+
+# 输出：
+# a1b2c3d4e5f6... refs/tags/v1.0.0
+# e7f8g9h0i1j2... refs/tags/v1.1.0
+```
+
+#### 13.10.10 最佳实践建议 💡
+
+##### **1. 定期检查远程仓库状态**
+```bash
+# 定期执行
+git remote -v
+git branch -vv
+git status
+```
+
+##### **2. 使用SSH密钥（推荐）**
+```bash
+# 检查是否使用SSH
+git remote -v
+# 应该显示：git@github.com:用户名/仓库名.git
+
+# 如果不是SSH，可以修改
+git remote set-url origin git@github.com:用户名/仓库名.git
+```
+
+##### **3. 验证远程仓库权限**
+```bash
+# 测试推送权限
+git push origin main
+
+# 测试拉取权限
+git pull origin main
+```
+
+> 💡 **小贴士**: 定期检查远程仓库信息是Git协作开发的重要习惯，确保你的本地仓库与远程仓库保持正确的连接关系！
+
+### 13.11 新建GitHub仓库本地推送完整指南 🚀
+
+#### 13.10.1 在GitHub上创建新仓库 🌐
+
+1. **登录GitHub**：访问 https://github.com
+2. **点击"New repository"**：右上角的"+"按钮 → "New repository"
+3. **填写仓库信息**：
+   - Repository name: `test_create_repo`（你的仓库名）
+   - Description: `测试仓库`（可选）
+   - Public/Private: 选择可见性
+   - **不要勾选** "Add a README file"
+   - **不要勾选** "Add .gitignore"
+   - **不要勾选** "Choose a license"
+4. **点击"Create repository"**
+
+#### 13.10.2 本地操作完整流程 💻
+
+```bash
+# 1. 进入你的项目目录
+cd ~/Desktop/归档材料/test_create_repo
+
+# 2. 初始化Git仓库（如果还没做）
+git init
+
+# 3. 添加远程仓库（替换为你的实际仓库地址）
+git remote add origin https://github.com/你的用户名/test_create_repo.git
+
+# 4. 创建第一个文件
+echo "# 测试仓库" > README.md
+
+# 5. 添加文件到暂存区
+git add README.md
+
+# 6. 提交到本地仓库
+git commit -m "Initial commit: 添加README文件"
+
+# 7. 推送到远程仓库
+git push -u origin master
+```
+
+#### 13.10.3 git push命令详解 🔍
+
+##### **命令结构**
+```bash
+git push -u origin master
+#     ↑    ↑      ↑
+#     │    │      └── 本地分支名
+#     │    └────────── 远程仓库名
+#     └─────────────── 设置上游分支
+```
+
+##### **分支关系说明**
+- **本地分支**：`master`（命令最后的参数）
+- **远程分支**：`origin/master`（远程仓库名 + "/" + 分支名）
+
+##### **分支关系图**
+```
+本地仓库                   远程仓库(origin)
+┌─────────────┐           ┌─────────────┐
+│   master    │ ──────→   │   master    │
+│  (本地分支)  │           │ (远程分支)   │
+└─────────────┘           └─────────────┘
+```
+
+#### 13.10.4 推送过程详解 🔄
+
+**推送前状态**：
+```
+本地仓库: master (有新的提交)
+远程仓库: origin/master (没有新提交)
+```
+
+**执行命令**：
+```bash
+git push -u origin master
+```
+
+**推送后状态**：
+```
+本地仓库: master (与远程同步)
+远程仓库: origin/master (有了新提交)
+```
+
+#### 13.10.5 不同分支名推送示例 🛠️
+
+##### **推送到不同分支名**
+```bash
+# 本地master推送到远程main分支
+git push -u origin master:main
+
+# 本地feature推送到远程develop分支
+git push -u origin feature:develop
+```
+
+##### **本地分支4055推送到远程4056**
+```bash
+git push -u origin 4055:4056
+#     ↑    ↑      ↑    ↑
+#     │    │      │    └── 远程分支名
+#     │    │      └─────── 本地分支名
+#     │    └────────────── 远程仓库名
+#     └─────────────────── 设置上游分支
+```
+
+**分支关系图**：
+```
+本地仓库                   远程仓库(origin)
+┌─────────────┐           ┌─────────────┐
+│     4055    │ ──────→   │     4056    │
+│  (本地分支)  │           │ (远程分支)   │
+└─────────────┘           └─────────────┘
+```
+
+#### 13.10.6 -u参数详解 ⚙️
+
+##### **-u参数的作用**
+- **全称**：`--set-upstream`
+- **作用**：设置上游分支（upstream branch）
+- **效果**：建立本地分支与远程分支的跟踪关系
+
+##### **使用-u的好处**
+```bash
+# 设置了上游分支后，可以直接使用
+git push                    # 等同于 git push origin master
+git pull                    # 等同于 git pull origin master
+git status                  # 会显示与远程分支的关系
+```
+
+##### **对比：有-u和没有-u**
+```bash
+# 使用-u参数
+git push -u origin master
+# 结果：本地master分支跟踪远程origin/master分支
+
+# 不使用-u参数
+git push origin master
+# 结果：没有建立跟踪关系
+```
+
+#### 13.10.7 常见问题解决 🔧
+
+##### **问题1：分支名称不匹配**
+```bash
+# 如果GitHub默认分支是main，而本地是master
+git branch -M main
+git push -u origin main
+```
+
+##### **问题2：权限问题**
+```bash
+# 使用Personal Access Token
+git remote set-url origin https://你的用户名:你的Token@github.com/你的用户名/test_create_repo.git
+```
+
+##### **问题3：SSH密钥问题**
+```bash
+# 使用SSH地址
+git remote set-url origin git@github.com:你的用户名/test_create_repo.git
+```
+
+#### 13.10.8 验证推送结果 ✅
+
+##### **检查本地状态**
+```bash
+# 查看当前状态
+git status
+
+# 查看提交历史
+git log --oneline
+
+# 查看远程仓库
+git remote -v
+
+# 查看分支跟踪关系
+git branch -vv
+```
+
+##### **检查远程仓库**
+- 访问你的GitHub仓库页面
+- 确认README.md文件已上传
+- 确认提交历史显示正确
+
+#### 13.10.9 最佳实践建议 💡
+
+##### **1. 使用SSH密钥（推荐）**
+```bash
+# 生成SSH密钥
+ssh-keygen -t rsa -b 4096 -C "你的邮箱@example.com"
+
+# 添加到GitHub
+# 1. 复制公钥内容
+cat ~/.ssh/id_rsa.pub
+# 2. 在GitHub Settings → SSH and GPG keys 中添加
+
+# 使用SSH地址
+git remote add origin git@github.com:你的用户名/test_create_repo.git
+```
+
+##### **2. 统一分支名称**
+```bash
+# 设置默认分支为main
+git branch -M main
+git push -u origin main
+```
+
+##### **3. 添加.gitignore文件**
+```bash
+# 创建.gitignore文件
+echo "node_modules/" > .gitignore
+echo "*.log" >> .gitignore
+
+# 添加并提交
+git add .gitignore
+git commit -m "feat: 添加.gitignore文件"
+git push origin main
+```
+
+> 💡 **小贴士**: 新建GitHub仓库的推送操作是Git协作开发的基础，理解每个参数的作用和分支关系对于掌握Git非常重要！
+
+
+
 ## 14. 其他补充信息 📚
 
 ### 14.1 Commit Type 类别 📋
